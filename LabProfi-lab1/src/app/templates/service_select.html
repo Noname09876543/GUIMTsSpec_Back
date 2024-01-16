@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="flex space-between items-center">
+  <h2>Специалисты</h2>
+  <div class="search-container">
+    <form action="{% url 'service_select' %}" method="get">
+      {% if query %}
+        <input name="q" type="text" placeholder="Поиск..." value="{{query}}">
+      {% else %}
+        <input name="q" type="text" placeholder="Поиск...">
+      {% endif %}
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+
+<div id="specialists-list">
+  {% for specialist in specialists %}
+  <a href="{% url 'service_info' id=specialist.id %}">
+    <div class="specialist-card">
+      <img src="/static/{{specialist.preview_img}}" alt="preview" height="100rem" width="110rem"/>
+      <h3>{{specialist.name}}</h3>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+/* colors vars */
+:root {
+    --primary-color: #1D7373;
+    --border-color: #d6d6d6;
+    --shadow-color: #bdbdbd;
+}
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.button {
+    border: none;
+    padding: 1rem 2rem;
+}
+.button.primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+#welcome-wrapper {
+    margin-top: 45vh;
+    text-align: center;
+}
+
+#page-wrapper {
+    padding: 4rem 5rem 0 5rem;
+}
+
+.specialist-card {
+    padding: 2rem;
+    border: 1px var(--border-color) solid;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem
+    
+}
+
+.specialist-card:hover{
+    box-shadow: 0 5px 10px var(--shadow-color);
+}
+
+.search-container {
+    border: 1px var(--border-color) solid;
+    height: 3rem;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.search-container input {
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
+
+.search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }

@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<h2>Информация о специалисте</h2>
+<div id="specialists-list">
+  <div class="specialist-card">
+    <img src="/static/{{specialist.preview_img}}" alt="preview" height="300rem"/>
+    <div>
+      <h3>{{specialist.name}}</h3>
+      <p>{{specialist.description}}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
