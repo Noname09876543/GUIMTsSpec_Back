@@ -1,0 +1,108 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15.2
+    volumes:
+      - ./storage/postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=lab_work_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=lab_work_db
+      - POSTGRES_PORT=5432
+    ports:
+      - "5433:5432"
+    dns:
+      - "8.8.8.8"
+      - "8.8.4.4"
+      - "127.0.0.11"
+    expose:
+      - 5433
+    networks:
+      - default_network
+
+  migrate:
+    container_name: 'migrate_lab5'
+    build: ./specialistsProject
+    command: >
+      /bin/sh -c "python3 manage.py makemigrations --force-color --no-input -v 3
+      && python3 manage.py makemigrations --merge --no-input -v 3
+      && python3 manage.py migrate --force-color -v 3
+      && python3 manage.py createsuperuser --noinput; exit 0"
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@mail.com
+    depends_on:
+      postgres:
+        condition: service_started
+    networks:
+      - default_network
+
+  minio:
+    image: minio/minio
+    hostname: "minio"
+    volumes:
+      - ./minio:/minio_files
+    env_file:
+      - minio.env
+    command: 'minio server /minio_files --console-address ":9001"'
+    dns:
+      - "8.8.8.8"
+      - "8.8.4.4"
+      - "127.0.0.11"
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - default_network
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    env_file:
+      - minio.env
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb --quiet myminio/photos;
+      /usr/bin/mc policy set none myminio/photos;
+      "
+
+  redis:
+    image: redis:7.2
+    restart: always
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis:/data
+    networks:
+      - default_network
+
+  api_lab5:
+    build: ./specialistsProject
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - minio.env
+    volumes:
+      - ./specialistsProject:/backend_root
+    ports:
+      - "8000:8000"
+    dns:
+      - "8.8.8.8"
+      - "8.8.4.4"
+      - "127.0.0.11"
+    depends_on:
+      - migrate
+      - redis
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - default_network
+
+
+networks:
+  default_network:

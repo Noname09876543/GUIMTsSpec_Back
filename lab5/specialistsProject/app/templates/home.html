@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<div id="welcome-wrapper">
+  <h1>Добро пожаловать!</h1>
+  <h2>Вы попали на сайт "Заявки на услуги специалистов ГУИМЦ"</h2>
+  <p>Нажав на кнопку, перейдите для выбора услуги</p>
+  <a href="{% url 'service_select' %}">
+    <button class="button primary">Выбрать услугу</button>
+  </a>
+</div>
+
+{% endblock %}

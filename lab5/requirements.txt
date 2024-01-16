@@ -1,0 +1,8 @@
+asgiref==3.7.2
+Django==4.2.5
+Pillow==10.0.0
+sqlparse==0.4.4
+djangorestframework==3.14.0
+django-storages==1.14.2
+boto3==1.28.71
+drf-yasg==1.21.7

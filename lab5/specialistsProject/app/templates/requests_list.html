@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+    <div class="flex space-between items-center my-4">
+        <h2>Последние 2 заявки</h2>
+    </div>
+
+    <div id="specialists-list">
+        {% for request in last_requests %}
+            <div class="list-view-card">
+                <img src="{{ request.specialist.first.preview_image.url }}" alt="preview" height="90rem"
+                     width="100rem"/>
+                <div>
+                    <p>Заявка на специалиста <b>{{ request.specialist.first.name }}</b></p>
+                    <p>Статус: <b>{{ request.get_status_display }}</b></p>
+                    <p>Cоздана: <b>{{ request.created_at }}</b></p>
+                    <p>Комментарий: <b>{{ request.comment }}</b></p>
+                    {% if request.status != "CANCELED" %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="button primary" value="Отменить заявку">
+                            <input type="hidden" name="request" value="{{ request.id }}">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="flex space-between items-center my-4">
+        <h2>Все заявки</h2>
+    </div>
+
+    <div id="specialists-list">
+        {% for request in requests %}
+            <div class="list-view-card">
+                <img src="{{ request.specialist.first.preview_image.url }}" alt="preview" height="90rem"
+                     width="100rem"/>
+                <div>
+                    <p>Заявка на специалиста <b>{{ request.specialist.first.name }}</b></p>
+                    <p>Статус: <b>{{ request.get_status_display }}</b></p>
+                    <p>Cоздана: <b>{{ request.created_at }}</b></p>
+                    <p>Комментарий: <b>{{ request.comment }}</b></p>
+                    {% if request.status != "CANCELED" %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="button primary" value="Отменить заявку">
+                            <input type="hidden" name="request" value="{{ request.id }}">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
