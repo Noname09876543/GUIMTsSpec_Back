@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="flex space-between items-center my-4">
+  <h2>Услуги</h2>
+  <div class="search-container">
+    <form action="{% url 'service_select' %}" method="get">
+      {% if query %}
+        <input name="q" type="text" placeholder="Поиск..." value="{{query}}">
+      {% else %}
+        <input name="q" type="text" placeholder="Поиск...">
+      {% endif %}
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+
+<div id="specialists-list">
+  {% for specialist in specialists %}
+  <a href="{% url 'service_info' id=specialist.id %}" class="text-decoration-none">
+    <div class="list-view-card">
+      <img src="{{specialist.preview_image.url}}" alt="preview" height="90rem" width="100rem"/>
+      <div>
+        <p>Услуги специалиста</p>
+        <h4>{{specialist.name}}</h4>
+          <br>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" class="button primary" value="Удалить специалиста">
+            <input type="hidden" name="specialist" value="{{ specialist.id }}">
+        </form>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

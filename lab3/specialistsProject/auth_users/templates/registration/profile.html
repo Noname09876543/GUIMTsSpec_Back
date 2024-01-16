@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block breadcrumbs %}
+  <li class="breadcrumb-item text-decoration-none"><a class="text-decoration-none" href="/">Профиль</a></li>
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center mt-4">Личный кабинет</h1>
+  <div class="m-5">
+    {% if user.is_authenticated %}
+      <div class="flex space-between">
+        <div>
+          <h3 class="mb-4">Ваш профиль</h3>
+          <p><b>Имя:</b> {{ user.first_name }}</p>
+          <p><b>Фамилия:</b> {{ user.last_name }}</p>
+          <p><b>Имя пользователя:</b> {{ user.username }}</p>
+          <p><b>Email:</b> {{ user.email }}</p>
+          <a href="{% url 'logout' %}">
+            <button type="button" class="button primary">Выйти</button>
+          </a>
+        </div>
+        <div>
+          <h3 class="mb-4">Управление</h3>
+          <div class="col-12 col-md-6 col-lg-8 w-100 pt-3">
+            <form class="review-form" action="{% url 'edit_profile' %}" method="post">
+              <div>
+                {{ profile_form.as_p }}
+                {% csrf_token %}
+                <p><input class="button primary" type="submit" value="Изменить"></p>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 col-md-6 col-lg-8 w-100 pt-3">
+            <form class="review-form" action="{% url 'profile' %}" method="post">
+              <div>
+                {{ password_form.as_p }}
+                {% csrf_token %}
+                <p><input class="button primary" type="submit" value="Изменить"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+        
+      {% else %}
+        <div class="flex my-4 text-center">
+          <a class="text-decoration-none" href="{% url 'signup' %}">
+            <button type="button" class="button primary">Создать аккаунт
+            </button>
+          </a>
+          <a class="text-decoration-none" href="{% url 'login' %}">
+            <button type="button" class="button primary">Войти</button>
+          </a>
+        </div>
+      {% endif %}
+  </div>
+{% endblock %}
